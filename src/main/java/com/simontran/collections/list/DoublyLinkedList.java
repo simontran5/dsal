@@ -1,20 +1,20 @@
 package com.simontran.collections.list;
 
-public class DoublyLinkedList<E> {
-    private static class Node<E> {
-        Node<E> prev;
-        E data;
-        Node<E> next;
+public class DoublyLinkedList<T> implements List<T> {
+    private static class Node<T> {
+        private Node<T> prev;
+        private T data;
+        private Node<T> next;
 
-        Node(E data) {
+        public Node(T data) {
             this.prev = null;
             this.data = data;
             this.next = null;
         }
     }
 
-    private Node<E> dummyHead;
-    private Node<E> dummyTail;
+    private Node<T> dummyHead;
+    private Node<T> dummyTail;
     private int size;
 
     public DoublyLinkedList() {
@@ -25,46 +25,46 @@ public class DoublyLinkedList<E> {
         this.size = 0;
     }
 
-    public E get(int index) {
+    public T get(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
         return this.getNode(index).data;
     }
 
-    public E getFirst() {
+    public T front() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.dummyHead.next.data;
     }
 
-    public E getLast() {
+    public T back() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.dummyTail.prev.data;
     }
 
-    public E set(int index, E element) {
+    public T set(int index, T element) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<E> node = this.getNode(index);
-        E oldElement = node.data;
+        Node<T> node = this.getNode(index);
+        T oldElement = node.data;
         node.data = element;
         return oldElement;
     }
 
-    public void add(int index, E element) {
+    public void insert(int index, T element) {
         if (index > this.size) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<E> newNode = new Node<>(element);
-        Node<E> prevNode;
-        Node<E> nextNode;
+        Node<T> newNode = new Node<>(element);
+        Node<T> prevNode;
+        Node<T> nextNode;
 
         if (this.size == 0) {
             prevNode = this.dummyHead;
@@ -88,22 +88,22 @@ public class DoublyLinkedList<E> {
         this.size += 1;
     }
 
-    public void addFirst(E element) {
-        this.add(0, element);
+    public void pushFront(T element) {
+        this.insert(0, element);
     }
 
-    public void addLast(E element) {
-        this.add(this.size, element);
+    public void pushBack(T element) {
+        this.insert(this.size, element);
     }
 
-    public E remove(int index) {
+    public T remove(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<E> removeNode;
-        Node<E> prevNode;
-        Node<E> nextNode;
+        Node<T> removeNode;
+        Node<T> prevNode;
+        Node<T> nextNode;
 
         if (index == 0) {
             removeNode = this.dummyHead.next;
@@ -121,28 +121,28 @@ public class DoublyLinkedList<E> {
 
         prevNode.next = nextNode;
         nextNode.prev = prevNode;
-        E removedElement = removeNode.data;
+        T removedElement = removeNode.data;
         this.size -= 1;
 
         return removedElement;
     }
 
-    public E removeFirst() {
+    public T removeFront() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.remove(0);
     }
 
-    public E removeLast() {
+    public T removeBack() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.remove(this.size - 1);
     }
 
-    private Node<E> getNode(int index) {
-        Node<E> current;
+    private Node<T> getNode(int index) {
+        Node<T> current;
         if (index < this.size / 2) {
             current = this.dummyHead.next;
             for (int i = 0; i < index; i += 1) {

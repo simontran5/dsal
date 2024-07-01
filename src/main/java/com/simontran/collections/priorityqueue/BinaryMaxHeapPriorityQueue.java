@@ -25,9 +25,8 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
         }
     }
 
-    public void add(K key) {
+    public void insert(K key) {
         this.data.add(key);
-
         siftUp(this.data.size() - 1);
     }
 
@@ -35,19 +34,14 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
         if (this.data.size() == 1) {
             throw new IllegalStateException("Priority queue is empty");
         }
-
         return this.data.get(1);
     }
 
     public K removeTop() {
         K top = this.data.get(1);
-
         this.data.set(1, this.data.getLast());
-
         this.data.removeLast();
-
         siftDown(1);
-
         return top;
     }
 
@@ -55,15 +49,12 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
         int largest = i;
         int left = left(i);
         int right = right(i);
-
         if (left <= this.data.size() - 1 && this.data.get(left).compareTo(this.data.get(largest)) > 0) {
             largest = left;
         }
-
         if (right <= this.data.size() - 1 && this.data.get(right).compareTo(this.data.get(largest)) > 0) {
             largest = right;
         }
-
         if (largest != i) {
             swap(i, largest);
             siftDown(largest);

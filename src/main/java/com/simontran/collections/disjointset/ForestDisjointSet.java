@@ -1,6 +1,6 @@
 package com.simontran.collections.disjointset;
 
-public class ForestDisjointSet<E> implements DisjointSet<E> {
+public class ForestDisjointSet<T> implements DisjointSet<T> {
     private int[] parent;
     private int[] rank;
 

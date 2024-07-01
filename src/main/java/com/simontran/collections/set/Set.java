@@ -3,7 +3,7 @@ package com.simontran.collections.set;
 public interface Set<K> {
     boolean contains(K key);
 
-    boolean add(K key);
+    void insert(K key);
 
-    boolean remove(K key);
+    void remove(K key);
 }

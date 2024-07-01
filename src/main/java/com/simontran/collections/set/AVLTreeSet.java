@@ -1,17 +1,17 @@
 package com.simontran.collections.set;
 
-public class AVLTreeSet<K extends Comparable<K>> implements SortedSet<K> {
+public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
     private static class Node<K> {
-        K key;
-        Node<K> left;
-        Node<K> right;
-        int height;
+        private K key;
+        private Node<K> left;
+        private Node<K> right;
+        private int height;
 
-        Node(K key) {
+        public Node(K key) {
             this.key = key;
             this.left = null;
             this.right = null;
-            this.height = 0;
+            this.height = 1;
         }
     }
 
@@ -21,100 +21,130 @@ public class AVLTreeSet<K extends Comparable<K>> implements SortedSet<K> {
         this.root = null;
     }
 
+    public K min() {
+        return minNode(this.root).key;
+    }
+
+    public K max() {
+        return maxNode(this.root).key;
+    }
+
+    public K successor(K key) {
+        Node<K> successor = successorNode(this.root, key);
+        return successor != null ? successor.key : null;
+    }
+
+    public K predecessor(K key) {
+        Node<K> predecessor = predecessorNode(this.root, key);
+        return predecessor != null ? predecessor.key : null;
+    }
+
     public boolean contains(K key) {
-        Node<K> current = this.root;
-        while (current != null) {
-            int cmp = key.compareTo(current.key);
+        Node<K> node = getNode(this.root, key);
+        return node != null;
+    }
+
+    public void insert(K key) {
+        this.root = insertNode(this.root, key);
+    }
+
+    public void remove(K key) {
+        this.root = removeNode(this.root, key);
+    }
+
+    private Node<K> minNode(Node<K> node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    private Node<K> maxNode(Node<K> node) {
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    private Node<K> successorNode(Node<K> node, K key) {
+        Node<K> successor = null;
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
             if (cmp < 0) {
-                current = current.left;
-            } else if (cmp > 0) {
-                current = current.right;
+                successor = node;
+                node = node.left;
             } else {
-                return true;
+                node = node.right;
             }
         }
-        return false;
+        return successor;
     }
 
-    public K getFirst() {
-        Node<K> current = this.root;
-        while (current.left != null) {
-            current = current.left;
+    private Node<K> predecessorNode(Node<K> node, K key) {
+        Node<K> predecessor = null;
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
+            if (cmp > 0) {
+                predecessor = node;
+                node = node.right;
+            } else {
+                node = node.left;
+            }
         }
-        return current.key;
+        return predecessor;
     }
 
-    public K getLast() {
-        Node<K> current = this.root;
-        while (current.right != null) {
-            current = current.right;
+    private Node<K> getNode(Node<K> node, K key) {
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
+            if (cmp < 0) {
+                node = node.left;
+            } else if (cmp > 0) {
+                node = node.right;
+            } else {
+                return node;
+            }
         }
-        return current.key;
+        return null;
     }
 
-    public boolean add(K key) {
-        if (contains(key)) {
-            return false;
-        }
-        this.root = add(this.root, key);
-        return true;
-    }
-
-    private Node<K> add(Node<K> root, K key) {
-        if (root == null) {
+    private Node<K> insertNode(Node<K> node, K key) {
+        if (node == null) {
             return new Node<>(key);
         }
-        int cmp = key.compareTo(root.key);
+        int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            root.left = add(root.left, key);
+            node.left = insertNode(node.left, key);
         } else if (cmp > 0) {
-            root.right = add(root.right, key);
-        }
-        updateHeight(root);
-        return balance(root);
-    }
-
-    public boolean remove(K key) {
-        if (!contains(key)) {
-            return false;
-        }
-        this.root = remove(this.root, key);
-        return true;
-    }
-
-    private Node<K> remove(Node<K> root, K key) {
-        if (root == null) {
-            return null;
-        }
-        int cmp = key.compareTo(root.key);
-        if (cmp < 0) {
-            root.left = remove(root.left, key);
-        } else if (cmp > 0) {
-            root.right = remove(root.right, key);
+            node.right = insertNode(node.right, key);
         } else {
-            if (root.left == null) {
-                root = root.right;
-            } else if (root.right == null) {
-                root = root.left;
-            } else {
-                Node<K> successor = getSuccessor(root.right);
-                root.key = successor.key;
-                root.right = remove(root.right, root.key);
-            }
+            node.key = key;
         }
-        if (root == null) {
-            return null;
-        }
-        updateHeight(root);
-        return balance(root);
+        updateHeight(node);
+        return balance(node);
     }
 
-    private Node<K> getSuccessor(Node<K> root) {
-        Node<K> current = root;
-        while (current.left != null) {
-            current = current.left;
+    private Node<K> removeNode(Node<K> node, K key) {
+        if (node == null) {
+            return null;
         }
-        return current;
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            node.left = removeNode(node.left, key);
+        } else if (cmp > 0) {
+            node.right = removeNode(node.right, key);
+        } else {
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            }
+            Node<K> successor = minNode(node.right);
+            node.key = successor.key;
+            node.right = removeNode(node.right, successor.key);
+        }
+        updateHeight(node);
+        return balance(node);
     }
 
     private void updateHeight(Node<K> node) {
@@ -122,24 +152,21 @@ public class AVLTreeSet<K extends Comparable<K>> implements SortedSet<K> {
     }
 
     private int height(Node<K> node) {
-        if (node == null) {
-            return -1;
-        }
-        return node.height;
+        return node == null ? 0 : node.height;
     }
 
     private Node<K> balance(Node<K> node) {
         int balanceFactor = balanceFactor(node);
-        if (balanceFactor < -1) { // left heavy
-            if (balanceFactor(node.left) > 0) { // left triangle
-                node.left = rotateLeft(node.left);
-            }
-            node = rotateRight(node);
-        } else if (balanceFactor > 1) { // right heavy
+        if (balanceFactor > 1) { // right heavy
             if (balanceFactor(node.right) < 0) { // right triangle
-                node.right = rotateRight(node.right);
+                node.right = rightRotate(node.right);
             }
-            node = rotateLeft(node);
+            node = leftRotate(node);
+        } else if (balanceFactor < -1) { // left heavy
+            if (balanceFactor(node.left) > 0) { // left triangle
+                node.left = leftRotate(node.left);
+            }
+            node = rightRotate(node);
         }
         return node;
     }
@@ -148,7 +175,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements SortedSet<K> {
         return height(node.right) - height(node.left);
     }
 
-    private Node<K> rotateRight(Node<K> root) {
+    private Node<K> rightRotate(Node<K> root) {
         Node<K> newRoot = root.left;
         root.left = newRoot.right;
         newRoot.right = root;
@@ -157,7 +184,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements SortedSet<K> {
         return newRoot;
     }
 
-    private Node<K> rotateLeft(Node<K> root) {
+    private Node<K> leftRotate(Node<K> root) {
         Node<K> newRoot = root.right;
         root.right = newRoot.left;
         newRoot.left = root;

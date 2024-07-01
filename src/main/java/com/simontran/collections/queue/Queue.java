@@ -1,9 +1,9 @@
 package com.simontran.collections.queue;
 
-public interface Queue<E> {
-    E peek();
+public interface Queue<T> {
+    T peek();
 
-    void enqueue(E element);
+    void enqueue(T element);
 
-    E dequeue();
+    T dequeue();
 }

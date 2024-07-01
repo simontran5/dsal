@@ -1,23 +1,23 @@
 package com.simontran.collections.list;
 
-public interface List<E> {
-    E get(int index);
+public interface List<T> {
+    T get(int index);
 
-    E getFirst();
+    T front();
 
-    E getLast();
+    T back();
 
-    E set(int index, E element);
+    T set(int index, T element);
 
-    void add(int index, E element);
+    void insert(int index, T element);
 
-    void addFirst(E element);
+    void pushFront(T element);
 
-    void addLast(E element);
+    void pushBack(T element);
 
-    E remove(int index);
+    T remove(int index);
 
-    E removeFirst();
+    T removeFront();
 
-    E removeLast();
+    T removeBack();
 }

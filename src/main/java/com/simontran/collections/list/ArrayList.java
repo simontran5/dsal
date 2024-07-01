@@ -1,48 +1,48 @@
 package com.simontran.collections.list;
 
-public class ArrayList<E> implements List<E> {
+public class ArrayList<T> implements List<T> {
     private static final int INITIAL_CAPACITY = 10;
     private static final int GROWTH_FACTOR = 2;
 
-    private E[] data;
+    private T[] data;
     private int size;
 
     public ArrayList() {
-        this.data = (E[]) new Object[INITIAL_CAPACITY];
+        this.data = (T[]) new Object[INITIAL_CAPACITY];
         this.size = 0;
     }
 
-    public E get(int index) {
+    public T get(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[index];
     }
 
-    public E getFirst() {
+    public T front() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[0];
     }
 
-    public E getLast() {
+    public T back() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[this.size - 1];
     }
 
-    public E set(int index, E element) {
+    public T set(int index, T element) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
-        E oldElement = this.data[index];
+        T oldElement = this.data[index];
         this.data[index] = element;
         return oldElement;
     }
 
-    public void add(int index, E element) {
+    public void insert(int index, T element) {
         if (index > this.size) {
             throw new IndexOutOfBoundsException();
         }
@@ -56,33 +56,33 @@ public class ArrayList<E> implements List<E> {
         this.size += 1;
     }
 
-    public void addFirst(E element) {
-        add(0, element);
+    public void pushFront(T element) {
+        insert(0, element);
     }
 
-    public void addLast(E element) {
-        add(this.size, element);
+    public void pushBack(T element) {
+        insert(this.size, element);
     }
 
-    public E remove(int index) {
+    public T remove(int index) {
         if (index >= size) {
             throw new IndexOutOfBoundsException();
         }
-        E oldElement = this.data[index];
+        T oldElement = this.data[index];
         System.arraycopy(this.data, index + 1, this.data, index, this.size - index - 1);
         this.data[this.size - 1] = null;
         this.size -= 1;
         return oldElement;
     }
 
-    public E removeFirst() {
+    public T removeFront() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return remove(0);
     }
 
-    public E removeLast() {
+    public T removeBack() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
@@ -90,7 +90,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void resize(int newCapacity) {
-        E[] newData = (E[]) new Object[newCapacity];
+        T[] newData = (T[]) new Object[newCapacity];
         System.arraycopy(this.data, 0, newData, 0, this.size);
         this.data = newData;
     }

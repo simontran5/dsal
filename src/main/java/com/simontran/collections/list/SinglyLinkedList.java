@@ -1,18 +1,18 @@
 package com.simontran.collections.list;
 
-public class SinglyLinkedList<E> implements List<E> {
-    private static class Node<E> {
-        E data;
-        Node<E> next;
+public class SinglyLinkedList<T> implements List<T> {
+    private static class Node<T> {
+        private T data;
+        private Node<T> next;
 
-        Node(E data) {
+        public Node(T data) {
             this.data = data;
             this.next = null;
         }
     }
 
-    private Node<E> head;
-    private Node<E> tail;
+    private Node<T> head;
+    private Node<T> tail;
     private int size;
 
     public SinglyLinkedList() {
@@ -21,7 +21,7 @@ public class SinglyLinkedList<E> implements List<E> {
         this.size = 0;
     }
 
-    public E get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
@@ -37,49 +37,49 @@ public class SinglyLinkedList<E> implements List<E> {
         return getNode(index).data;
     }
 
-    public E getFirst() {
+    public T front() {
         if (this.head == null) {
             throw new IndexOutOfBoundsException();
         }
         return this.head.data;
     }
 
-    public E getLast() {
+    public T back() {
         if (this.tail == null) {
             throw new IndexOutOfBoundsException();
         }
         return this.tail.data;
     }
 
-    public E set(int index, E element) {
+    public T set(int index, T element) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
 
         if (index == 0) {
-            E oldElement = this.head.data;
+            T oldElement = this.head.data;
             this.head.data = element;
             return oldElement;
         }
 
         if (index == size - 1) {
-            E oldElement = this.tail.data;
+            T oldElement = this.tail.data;
             this.tail.data = element;
             return oldElement;
         }
 
-        Node<E> node = getNode(index);
-        E oldElement = node.data;
+        Node<T> node = getNode(index);
+        T oldElement = node.data;
         node.data = element;
         return oldElement;
     }
 
-    public void add(int index, E element) {
+    public void insert(int index, T element) {
         if (index > this.size) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<E> newNode = new Node<>(element);
+        Node<T> newNode = new Node<>(element);
 
         if (this.size == 0) {
             this.head = newNode;
@@ -91,7 +91,7 @@ public class SinglyLinkedList<E> implements List<E> {
             this.tail.next = newNode;
             this.tail = newNode;
         } else {
-            Node<E> prevNode = getNode(index - 1);
+            Node<T> prevNode = getNode(index - 1);
             newNode.next = prevNode.next;
             prevNode.next = newNode;
         }
@@ -99,20 +99,20 @@ public class SinglyLinkedList<E> implements List<E> {
         this.size += 1;
     }
 
-    public void addFirst(E element) {
-        add(0, element);
+    public void pushFront(T element) {
+        insert(0, element);
     }
 
-    public void addLast(E element) {
-        add(this.size, element);
+    public void pushBack(T element) {
+        insert(this.size, element);
     }
 
-    public E remove(int index) {
+    public T remove(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<E> removeNode;
+        Node<T> removeNode;
         if (index == 0) {
             removeNode = this.head;
             this.head = removeNode.next;
@@ -120,7 +120,7 @@ public class SinglyLinkedList<E> implements List<E> {
                 this.tail = null;
             }
         } else {
-            Node<E> prevNode = getNode(index - 1);
+            Node<T> prevNode = getNode(index - 1);
             removeNode = prevNode.next;
             prevNode.next = removeNode.next;
             if (index == this.size - 1) {
@@ -128,28 +128,28 @@ public class SinglyLinkedList<E> implements List<E> {
             }
         }
 
-        E removedElement = removeNode.data;
+        T removedElement = removeNode.data;
         this.size -= 1;
 
         return removedElement;
     }
 
-    public E removeFirst() {
+    public T removeFront() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return remove(0);
     }
 
-    public E removeLast() {
+    public T removeBack() {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return remove(this.size - 1);
     }
 
-    private Node<E> getNode(int index) {
-        Node<E> current = this.head;
+    private Node<T> getNode(int index) {
+        Node<T> current = this.head;
         for (int i = 0; i < index; i += 1) {
             current = current.next;
         }

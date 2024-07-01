@@ -1,19 +1,19 @@
 package com.simontran.collections.map;
 
-public class AVLTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
+public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> {
     private static class Node<K, V> {
-        K key;
-        V value;
-        Node<K, V> left;
-        Node<K, V> right;
-        int height;
+        private K key;
+        private V value;
+        private Node<K, V> left;
+        private Node<K, V> right;
+        private int height;
 
-        Node(K key, V value) {
+        public Node(K key, V value) {
             this.key = key;
             this.value = value;
             this.left = null;
             this.right = null;
-            this.height = 0;
+            this.height = 1;
         }
     }
 
@@ -23,102 +23,131 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
         this.root = null;
     }
 
+    public K min() {
+        return minNode(this.root).key;
+    }
+
+    public K max() {
+        return maxNode(this.root).key;
+    }
+
+    public K successor(K key) {
+        Node<K, V> successor = successorNode(this.root, key);
+        return successor != null ? successor.key : null;
+    }
+
+    public K predecessor(K key) {
+        Node<K, V> predecessor = predecessorNode(this.root, key);
+        return predecessor != null ? predecessor.key : null;
+    }
+
     public V get(K key) {
-        Node<K, V> current = this.root;
-        while (current != null) {
-            int cmp = key.compareTo(current.key);
+        Node<K, V> node = getNode(this.root, key);
+        return node != null ? node.value : null;
+    }
+
+    public void insert(K key, V value) {
+        this.root = insertNode(this.root, key, value);
+    }
+
+    public void remove(K key) {
+        this.root = removeNode(this.root, key);
+    }
+
+    private Node<K, V> minNode(Node<K, V> node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    private Node<K, V> maxNode(Node<K, V> node) {
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    private Node<K, V> successorNode(Node<K, V> node, K key) {
+        Node<K, V> successor = null;
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
             if (cmp < 0) {
-                current = current.left;
-            } else if (cmp > 0) {
-                current = current.right;
+                successor = node;
+                node = node.left;
             } else {
-                return current.value;
+                node = node.right;
+            }
+        }
+        return successor;
+    }
+
+    private Node<K, V> predecessorNode(Node<K, V> node, K key) {
+        Node<K, V> predecessor = null;
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
+            if (cmp > 0) {
+                predecessor = node;
+                node = node.right;
+            } else {
+                node = node.left;
+            }
+        }
+        return predecessor;
+    }
+
+    private Node<K, V> getNode(Node<K, V> node, K key) {
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
+            if (cmp < 0) {
+                node = node.left;
+            } else if (cmp > 0) {
+                node = node.right;
+            } else {
+                return node;
             }
         }
         return null;
     }
 
-    public V getFirst() {
-        Node<K, V> current = this.root;
-        while (current.left != null) {
-            current = current.left;
-        }
-        return current.value;
-    }
-
-    public V getLast() {
-        Node<K, V> current = this.root;
-        while (current.right != null) {
-            current = current.right;
-        }
-        return current.value;
-    }
-
-    public V put(K key, V value) {
-        if (key == null) {
-            throw new IllegalArgumentException("The key can't be null");
-        }
-        V previousValue = get(key);
-        this.root = put(this.root, key, value);
-        return previousValue;
-    }
-
-    public V remove(K key) {
-        V previousValue = get(key);
-        this.root = remove(this.root, key);
-        return previousValue;
-    }
-
-    private Node<K, V> put(Node<K, V> root, K key, V value) {
-        if (root == null) {
+    private Node<K, V> insertNode(Node<K, V> node, K key, V value) {
+        if (node == null) {
             return new Node<>(key, value);
         }
-        int cmp = key.compareTo(root.key);
+        int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            root.left = put(root.left, key, value);
+            node.left = insertNode(node.left, key, value);
         } else if (cmp > 0) {
-            root.right = put(root.right, key, value);
+            node.right = insertNode(node.right, key, value);
         } else {
-            root.value = value;
+            node.value = value;
         }
-        updateHeight(root);
-        return balance(root);
+        updateHeight(node);
+        return balance(node);
     }
 
-    private Node<K, V> remove(Node<K, V> root, K key) {
-        if (root == null) {
+    private Node<K, V> removeNode(Node<K, V> node, K key) {
+        if (node == null) {
             return null;
         }
-        int cmp = key.compareTo(root.key);
+        int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            root.left = remove(root.left, key);
+            node.left = removeNode(node.left, key);
         } else if (cmp > 0) {
-            root.right = remove(root.right, key);
+            node.right = removeNode(node.right, key);
         } else {
-            if (root.left == null) {
-                root = root.right;
-            } else if (root.right == null) {
-                root = root.left;
-            } else {
-                Node<K, V> successor = getSuccessor(root.right);
-                root.key = successor.key;
-                root.value = successor.value;
-                root.right = remove(root.right, root.key);
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
             }
+            Node<K, V> successor = minNode(node.right);
+            node.key = successor.key;
+            node.value = successor.value;
+            node.right = removeNode(node.right, successor.key);
         }
-        if (root == null) {
-            return null;
-        }
-        updateHeight(root);
-        return balance(root);
-    }
-
-    private Node<K, V> getSuccessor(Node<K, V> root) {
-        Node<K, V> current = root;
-        while (current.left != null) {
-            current = current.left;
-        }
-        return current;
+        updateHeight(node);
+        return balance(node);
     }
 
     private void updateHeight(Node<K, V> node) {
@@ -126,24 +155,21 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
     }
 
     private int height(Node<K, V> node) {
-        if (node == null) {
-            return -1;
-        }
-        return node.height;
+        return node == null ? 0 : node.height;
     }
 
     private Node<K, V> balance(Node<K, V> node) {
         int balanceFactor = balanceFactor(node);
-        if (balanceFactor < -1) { // left heavy
-            if (balanceFactor(node.left) > 0) { // left triangle
-                node.left = rotateLeft(node.left);
-            }
-            node = rotateRight(node);
-        } else if (balanceFactor > 1) { // right heavy
+        if (balanceFactor > 1) { // right heavy
             if (balanceFactor(node.right) < 0) { // right triangle
                 node.right = rotateRight(node.right);
             }
             node = rotateLeft(node);
+        } else if (balanceFactor < -1) { // left heavy
+            if (balanceFactor(node.left) > 0) { // left triangle
+                node.left = rotateLeft(node.left);
+            }
+            node = rotateRight(node);
         }
         return node;
     }

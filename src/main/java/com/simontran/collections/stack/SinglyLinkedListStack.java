@@ -2,10 +2,10 @@ package com.simontran.collections.stack;
 
 public class SinglyLinkedListStack<E> implements Stack<E> {
     private static class Node<E> {
-        E data;
-        Node<E> next;
+        private E data;
+        private Node<E> next;
 
-        Node(E data) {
+        public Node(E data) {
             this.data = data;
             this.next = null;
         }

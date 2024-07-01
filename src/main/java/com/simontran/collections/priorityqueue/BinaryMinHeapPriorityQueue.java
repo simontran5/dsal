@@ -12,10 +12,8 @@ public class BinaryMinHeapPriorityQueue<K extends Comparable<K>> implements Prio
 
     public BinaryMinHeapPriorityQueue(ArrayList<K> initialKeys) {
         this.data = new ArrayList<>();
-
         this.data.add(null);
         this.data.addAll(initialKeys);
-
         buildMinHeap();
     }
 
@@ -25,9 +23,8 @@ public class BinaryMinHeapPriorityQueue<K extends Comparable<K>> implements Prio
         }
     }
 
-    public void add(K key) {
+    public void insert(K key) {
         this.data.add(key);
-
         siftUp(this.data.size() - 1);
     }
 
@@ -35,19 +32,14 @@ public class BinaryMinHeapPriorityQueue<K extends Comparable<K>> implements Prio
         if (this.data.size() == 1) {
             throw new IllegalStateException("Priority queue is empty");
         }
-
         return this.data.get(1);
     }
 
     public K removeTop() {
         K top = this.data.get(1);
-
         this.data.set(1, this.data.getLast());
-
         this.data.removeLast();
-
         siftDown(1);
-
         return top;
     }
 
@@ -55,15 +47,12 @@ public class BinaryMinHeapPriorityQueue<K extends Comparable<K>> implements Prio
         int smallest = i;
         int left = left(i);
         int right = right(i);
-
         if (left <= this.data.size() - 1 && this.data.get(left).compareTo(this.data.get(smallest)) < 0) {
             smallest = left;
         }
-
         if (right <= this.data.size() - 1 && this.data.get(right).compareTo(this.data.get(smallest)) < 0) {
             smallest = right;
         }
-
         if (smallest != i) {
             swap(i, smallest);
             siftDown(smallest);

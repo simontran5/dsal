@@ -1,9 +1,9 @@
 package com.simontran.collections.stack;
 
-public interface Stack<E> {
-    E peek();
+public interface Stack<T> {
+    T peek();
 
-    void push(E element);
+    void push(T element);
 
-    E pop();
+    T pop();
 }

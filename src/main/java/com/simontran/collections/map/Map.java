@@ -3,7 +3,7 @@ package com.simontran.collections.map;
 public interface Map<K, V> {
     V get(K key);
 
-    V put(K key, V value);
+    void insert(K key, V value);
 
-    V remove(K key);
+    void remove(K key);
 }
