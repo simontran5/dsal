@@ -13,7 +13,7 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
             this.value = value;
             this.left = null;
             this.right = null;
-            this.height = 1;
+            this.height = 0;
         }
     }
 
@@ -155,7 +155,7 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
     }
 
     private int height(Node<K, V> node) {
-        return node == null ? 0 : node.height;
+        return node == null ? -1 : node.height;
     }
 
     private Node<K, V> balance(Node<K, V> node) {

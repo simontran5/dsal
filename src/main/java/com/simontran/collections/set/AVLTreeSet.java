@@ -11,7 +11,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
             this.key = key;
             this.left = null;
             this.right = null;
-            this.height = 1;
+            this.height = 0;
         }
     }
 
@@ -152,7 +152,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
     }
 
     private int height(Node<K> node) {
-        return node == null ? 0 : node.height;
+        return node == null ? -1 : node.height;
     }
 
     private Node<K> balance(Node<K> node) {

@@ -12,10 +12,8 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
 
     public BinaryMaxHeapPriorityQueue(ArrayList<K> initialKeys) {
         this.data = new ArrayList<>();
-
         this.data.add(null);
         this.data.addAll(initialKeys);
-
         buildMaxHeap();
     }
 
