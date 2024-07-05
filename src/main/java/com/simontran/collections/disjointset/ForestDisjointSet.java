@@ -16,7 +16,6 @@ public class ForestDisjointSet<T> implements DisjointSet<T> {
     public void union(int x, int y) {
         int xRep = find(x);
         int yRep = find(y);
-
         // Apply union by rank
         if (this.rank[xRep] > this.rank[yRep]) {
             this.parent[yRep] = xRep;

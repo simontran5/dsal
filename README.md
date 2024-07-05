@@ -17,6 +17,7 @@ Java data structures and algorithms library
 | disjoint set       | forest with path compression and union by rank heuristics                         |
 | graph              | adjacency list, adjacency matrix                                                  |
 
+
 ### algorithms
 
 | algorithm category           | algorithms                                                             |
@@ -40,10 +41,3 @@ Java data structures and algorithms library
 [Java](https://adoptium.net/) $\ge$ JDK 8
 
 ### steps
-
-https://courses.cs.washington.edu/courses/cse332/21sp/lectures/02-Dictionaries_Tries.pdf
-
-https://www.designgurus.io/course-play/grokking-data-structures-for-coding-interviews/doc/introduction-to-trie
-
-https://docs.google.com/presentation/d/1tcKJNY-ultPxwaHtYn-kd-DV7aXcuBQm6resYvpoCkw/edit#slide=id.g25f155b838b_0_91
-

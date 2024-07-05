@@ -12,28 +12,28 @@ public class ArrayList<T> implements List<T> {
         this.size = 0;
     }
 
-    public T get(int index) {
+    public T get(int index) throws IndexOutOfBoundsException {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[index];
     }
 
-    public T front() {
+    public T front() throws IndexOutOfBoundsException {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[0];
     }
 
-    public T back() {
+    public T back() throws IndexOutOfBoundsException {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return this.data[this.size - 1];
     }
 
-    public T set(int index, T element) {
+    public T set(int index, T element) throws IndexOutOfBoundsException {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
@@ -64,7 +64,7 @@ public class ArrayList<T> implements List<T> {
         insert(this.size, element);
     }
 
-    public T remove(int index) {
+    public T remove(int index) throws IndexOutOfBoundsException {
         if (index >= size) {
             throw new IndexOutOfBoundsException();
         }
@@ -75,14 +75,14 @@ public class ArrayList<T> implements List<T> {
         return oldElement;
     }
 
-    public T removeFront() {
+    public T removeFront() throws IndexOutOfBoundsException {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }
         return remove(0);
     }
 
-    public T removeBack() {
+    public T removeBack() throws IndexOutOfBoundsException {
         if (this.size == 0) {
             throw new IndexOutOfBoundsException();
         }

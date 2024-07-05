@@ -61,11 +61,9 @@ public class DoublyLinkedList<T> implements List<T> {
         if (index > this.size) {
             throw new IndexOutOfBoundsException();
         }
-
         Node<T> newNode = new Node<>(element);
         Node<T> prevNode;
         Node<T> nextNode;
-
         if (this.size == 0) {
             prevNode = this.dummyHead;
             nextNode = this.dummyTail;
@@ -79,12 +77,10 @@ public class DoublyLinkedList<T> implements List<T> {
             prevNode = this.getNode(index - 1);
             nextNode = prevNode.next;
         }
-
         prevNode.next = newNode;
         nextNode.prev = newNode;
         newNode.next = nextNode;
         newNode.prev = prevNode;
-
         this.size += 1;
     }
 
@@ -100,11 +96,9 @@ public class DoublyLinkedList<T> implements List<T> {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
-
         Node<T> removeNode;
         Node<T> prevNode;
         Node<T> nextNode;
-
         if (index == 0) {
             removeNode = this.dummyHead.next;
             prevNode = this.dummyHead;
@@ -118,12 +112,10 @@ public class DoublyLinkedList<T> implements List<T> {
             removeNode = prevNode.next;
             nextNode = removeNode.next;
         }
-
         prevNode.next = nextNode;
         nextNode.prev = prevNode;
         T removedElement = removeNode.data;
         this.size -= 1;
-
         return removedElement;
     }
 

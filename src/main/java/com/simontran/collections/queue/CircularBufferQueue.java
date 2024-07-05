@@ -16,7 +16,7 @@ public class CircularBufferQueue<T> implements Queue<T> {
         this.size = 0;
     }
 
-    public T peek() throws EmptyQueueException {
+    public T peek() {
         if (this.size == 0) {
             throw new EmptyQueueException();
         }
@@ -32,7 +32,7 @@ public class CircularBufferQueue<T> implements Queue<T> {
         this.size += 1;
     }
 
-    public T dequeue() throws EmptyQueueException {
+    public T dequeue() {
         if (this.size == 0) {
             throw new RuntimeException();
         }

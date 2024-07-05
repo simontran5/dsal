@@ -24,26 +24,31 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
     }
 
     public K min() {
+        if (this.root == null) throw new EmptyMapException();
         return minNode(this.root).key;
     }
 
     public K max() {
+        if (this.root == null) throw new EmptyMapException();
         return maxNode(this.root).key;
     }
 
     public K successor(K key) {
         Node<K, V> successor = successorNode(this.root, key);
-        return successor != null ? successor.key : null;
+        if (successor == null) throw new UnknownKeyException();
+        return successor.key;
     }
 
     public K predecessor(K key) {
         Node<K, V> predecessor = predecessorNode(this.root, key);
-        return predecessor != null ? predecessor.key : null;
+        if (predecessor == null) throw new UnknownKeyException();
+        return predecessor.key;
     }
 
     public V get(K key) {
         Node<K, V> node = getNode(this.root, key);
-        return node != null ? node.value : null;
+        if (node == null) throw new UnknownKeyException();
+        return node.value;
     }
 
     public void insert(K key, V value) {
@@ -128,7 +133,7 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
 
     private Node<K, V> removeNode(Node<K, V> node, K key) {
         if (node == null) {
-            return null;
+            throw new UnknownKeyException();
         }
         int cmp = key.compareTo(node.key);
         if (cmp < 0) {
@@ -178,6 +183,15 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return height(node.right) - height(node.left);
     }
 
+    private Node<K, V> rotateLeft(Node<K, V> root) {
+        Node<K, V> newRoot = root.right;
+        root.right = newRoot.left;
+        newRoot.left = root;
+        updateHeight(root);
+        updateHeight(newRoot);
+        return newRoot;
+    }
+
     private Node<K, V> rotateRight(Node<K, V> root) {
         Node<K, V> newRoot = root.left;
         root.left = newRoot.right;
@@ -187,12 +201,15 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return newRoot;
     }
 
-    private Node<K, V> rotateLeft(Node<K, V> root) {
-        Node<K, V> newRoot = root.right;
-        root.right = newRoot.left;
-        newRoot.left = root;
-        updateHeight(root);
-        updateHeight(newRoot);
-        return newRoot;
+    public static class EmptyMapException extends RuntimeException {
+        public EmptyMapException() {
+            super("Map is empty");
+        }
+    }
+
+    public static class UnknownKeyException extends RuntimeException {
+        public UnknownKeyException() {
+            super("Key was not found");
+        }
     }
 }

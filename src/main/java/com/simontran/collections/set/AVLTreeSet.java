@@ -22,21 +22,25 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
     }
 
     public K min() {
+        if (this.root == null) throw new EmptySetException();
         return minNode(this.root).key;
     }
 
     public K max() {
+        if (this.root == null) throw new EmptySetException();
         return maxNode(this.root).key;
     }
 
     public K successor(K key) {
         Node<K> successor = successorNode(this.root, key);
-        return successor != null ? successor.key : null;
+        if (successor == null) throw new UnknownKeyException();
+        return successor.key;
     }
 
     public K predecessor(K key) {
         Node<K> predecessor = predecessorNode(this.root, key);
-        return predecessor != null ? predecessor.key : null;
+        if (predecessor == null) throw new UnknownKeyException();
+        return predecessor.key;
     }
 
     public boolean contains(K key) {
@@ -118,7 +122,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
         } else if (cmp > 0) {
             node.right = insertNode(node.right, key);
         } else {
-            node.key = key;
+            throw new KeyAlreadyExistsException();
         }
         updateHeight(node);
         return balance(node);
@@ -126,7 +130,7 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
 
     private Node<K> removeNode(Node<K> node, K key) {
         if (node == null) {
-            return null;
+            throw new UnknownKeyException();
         }
         int cmp = key.compareTo(node.key);
         if (cmp < 0) {
@@ -159,14 +163,14 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
         int balanceFactor = balanceFactor(node);
         if (balanceFactor > 1) { // right heavy
             if (balanceFactor(node.right) < 0) { // right triangle
-                node.right = rightRotate(node.right);
+                node.right = rotateRight(node.right);
             }
-            node = leftRotate(node);
+            node = rotateLeft(node);
         } else if (balanceFactor < -1) { // left heavy
             if (balanceFactor(node.left) > 0) { // left triangle
-                node.left = leftRotate(node.left);
+                node.left = rotateLeft(node.left);
             }
-            node = rightRotate(node);
+            node = rotateRight(node);
         }
         return node;
     }
@@ -175,7 +179,16 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
         return height(node.right) - height(node.left);
     }
 
-    private Node<K> rightRotate(Node<K> root) {
+    private Node<K> rotateLeft(Node<K> root) {
+        Node<K> newRoot = root.right;
+        root.right = newRoot.left;
+        newRoot.left = root;
+        updateHeight(root);
+        updateHeight(newRoot);
+        return newRoot;
+    }
+
+    private Node<K> rotateRight(Node<K> root) {
         Node<K> newRoot = root.left;
         root.left = newRoot.right;
         newRoot.right = root;
@@ -184,12 +197,21 @@ public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
         return newRoot;
     }
 
-    private Node<K> leftRotate(Node<K> root) {
-        Node<K> newRoot = root.right;
-        root.right = newRoot.left;
-        newRoot.left = root;
-        updateHeight(root);
-        updateHeight(newRoot);
-        return newRoot;
+    public static class EmptySetException extends RuntimeException {
+        public EmptySetException() {
+            super("Set is empty");
+        }
+    }
+
+    public static class UnknownKeyException extends RuntimeException {
+        public UnknownKeyException() {
+            super("Key was not found");
+        }
+    }
+
+    public static class KeyAlreadyExistsException extends RuntimeException {
+        public KeyAlreadyExistsException() {
+            super("Key already exists");
+        }
     }
 }

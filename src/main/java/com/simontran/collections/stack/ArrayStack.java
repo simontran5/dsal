@@ -12,7 +12,7 @@ public class ArrayStack<T> implements Stack<T> {
         this.size = 0;
     }
 
-    public T peek() throws EmptyStackException {
+    public T peek() {
         if (this.size == 0) {
             throw new EmptyStackException();
         }
@@ -27,7 +27,7 @@ public class ArrayStack<T> implements Stack<T> {
         this.size += 1;
     }
 
-    public T pop() throws EmptyStackException {
+    public T pop() {
         if (this.size == 0) {
             throw new EmptyStackException();
         }
