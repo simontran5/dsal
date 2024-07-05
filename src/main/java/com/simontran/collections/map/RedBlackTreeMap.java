@@ -238,27 +238,27 @@ public class RedBlackTreeMap<K extends Comparable<K>, V> implements OrderedMap<K
                     rotateLeft(node.parent);
                     node = this.root;
                 }
-            } else { // // node is a right child
-                Node<K, V> w = node.parent.left;
-                if (w.color == RED) { // case 1
-                    w.color = BLACK;
+            } else { // node is a right child
+                Node<K, V> sibling = node.parent.left;
+                if (sibling.color == RED) { // case 1: sibling is red
+                    sibling.color = BLACK;
                     node.parent.color = RED;
                     rotateRight(node.parent);
-                    w = node.parent.left;
+                    sibling = node.parent.left;
                 }
-                if (w.right.color == BLACK && w.left.color == BLACK) { // case 2
-                    w.color = RED;
+                if (sibling.right.color == BLACK && sibling.left.color == BLACK) { // case 2: sibling is black, and its children are black
+                    sibling.color = RED;
                     node = node.parent;
                 } else {
-                    if (w.left.color == BLACK) { // case 3
-                        w.right.color = BLACK;
-                        w.color = RED;
-                        rotateLeft(w);
-                        w = node.parent.left;
+                    if (sibling.left.color == BLACK) { // case 3: sibling is black, and its right child is red and its left child is black
+                        sibling.right.color = BLACK;
+                        sibling.color = RED;
+                        rotateLeft(sibling);
+                        sibling = node.parent.left;
                     }
-                    w.color = node.parent.color; // case 4
+                    sibling.color = node.parent.color; // case 4: sibling is black, and its left child is red
                     node.parent.color = BLACK;
-                    w.left.color = BLACK;
+                    sibling.left.color = BLACK;
                     rotateRight(node.parent);
                     node = this.root;
                 }
