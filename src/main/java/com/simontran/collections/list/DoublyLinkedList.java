@@ -26,31 +26,22 @@ public class DoublyLinkedList<T> implements List<T> {
     }
 
     public T get(int index) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         return this.getNode(index).data;
     }
 
     public T front() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.dummyHead.next.data;
     }
 
     public T back() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.dummyTail.prev.data;
     }
 
     public T set(int index, T element) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
-
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         Node<T> node = this.getNode(index);
         T oldElement = node.data;
         node.data = element;
@@ -58,9 +49,7 @@ public class DoublyLinkedList<T> implements List<T> {
     }
 
     public void insert(int index, T element) {
-        if (index > this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index > this.size) throw new IndexOutOfBoundsException();
         Node<T> newNode = new Node<>(element);
         Node<T> prevNode;
         Node<T> nextNode;
@@ -93,9 +82,7 @@ public class DoublyLinkedList<T> implements List<T> {
     }
 
     public T remove(int index) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         Node<T> removeNode;
         Node<T> prevNode;
         Node<T> nextNode;
@@ -120,16 +107,12 @@ public class DoublyLinkedList<T> implements List<T> {
     }
 
     public T removeFront() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.remove(0);
     }
 
     public T removeBack() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.remove(this.size - 1);
     }
 

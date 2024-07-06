@@ -22,36 +22,24 @@ public class SinglyLinkedList<T> implements List<T> {
     }
 
     public T get(int index) {
-        if (index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (index == 0) {
-            return this.head.data;
-        }
-        if (index == this.size - 1) {
-            return this.tail.data;
-        }
+        if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException();
+        if (index == 0) return this.head.data;
+        if (index == this.size - 1) return this.tail.data;
         return getNode(index).data;
     }
 
     public T front() {
-        if (this.head == null) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.head == null) throw new IndexOutOfBoundsException();
         return this.head.data;
     }
 
     public T back() {
-        if (this.tail == null) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.tail == null) throw new IndexOutOfBoundsException();
         return this.tail.data;
     }
 
     public T set(int index, T element) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         if (index == 0) {
             T oldElement = this.head.data;
             this.head.data = element;
@@ -69,9 +57,7 @@ public class SinglyLinkedList<T> implements List<T> {
     }
 
     public void insert(int index, T element) {
-        if (index > this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index > this.size) throw new IndexOutOfBoundsException();
         Node<T> newNode = new Node<>(element);
         if (this.size == 0) {
             this.head = newNode;
@@ -99,23 +85,17 @@ public class SinglyLinkedList<T> implements List<T> {
     }
 
     public T remove(int index) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         Node<T> removeNode;
         if (index == 0) {
             removeNode = this.head;
             this.head = removeNode.next;
-            if (this.size == 1) {
-                this.tail = null;
-            }
+            if (this.size == 1) this.tail = null;
         } else {
             Node<T> prevNode = getNode(index - 1);
             removeNode = prevNode.next;
             prevNode.next = removeNode.next;
-            if (index == this.size - 1) {
-                this.tail = prevNode;
-            }
+            if (index == this.size - 1) this.tail = prevNode;
         }
         T removedElement = removeNode.data;
         this.size -= 1;
@@ -123,16 +103,12 @@ public class SinglyLinkedList<T> implements List<T> {
     }
 
     public T removeFront() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return remove(0);
     }
 
     public T removeBack() {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return remove(this.size - 1);
     }
 

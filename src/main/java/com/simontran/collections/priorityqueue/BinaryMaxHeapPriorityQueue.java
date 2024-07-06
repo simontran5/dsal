@@ -29,9 +29,7 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
     }
 
     public K peek() {
-        if (this.data.size() == 1) {
-            throw new EmptyPriorityQueueException();
-        }
+        if (this.data.size() == 1) return null;
         return this.data.get(1);
     }
 
@@ -82,12 +80,6 @@ public class BinaryMaxHeapPriorityQueue<K extends Comparable<K>> implements Prio
         K temp = this.data.get(i);
         this.data.set(i, this.data.get(j));
         this.data.set(j, temp);
-    }
-
-    public static class EmptyPriorityQueueException extends RuntimeException {
-        public EmptyPriorityQueueException() {
-            super("Priority Queue is empty");
-        }
     }
 }
 

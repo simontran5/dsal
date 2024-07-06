@@ -13,45 +13,31 @@ public class ArrayList<T> implements List<T> {
     }
 
     public T get(int index) throws IndexOutOfBoundsException {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         return this.data[index];
     }
 
     public T front() throws IndexOutOfBoundsException {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.data[0];
     }
 
     public T back() throws IndexOutOfBoundsException {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return this.data[this.size - 1];
     }
 
     public T set(int index, T element) throws IndexOutOfBoundsException {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= this.size) throw new IndexOutOfBoundsException();
         T oldElement = this.data[index];
         this.data[index] = element;
         return oldElement;
     }
 
     public void insert(int index, T element) {
-        if (index > this.size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (this.size == this.data.length) {
-            resize(this.data.length * GROWTH_FACTOR);
-        }
-        if (index < this.size) {
-            System.arraycopy(this.data, index, this.data, index + 1, this.size - index);
-        }
+        if (index > this.size) throw new IndexOutOfBoundsException();
+        if (this.size == this.data.length) resize(this.data.length * GROWTH_FACTOR);
+        if (index < this.size) System.arraycopy(this.data, index, this.data, index + 1, this.size - index);
         this.data[index] = element;
         this.size += 1;
     }
@@ -65,9 +51,7 @@ public class ArrayList<T> implements List<T> {
     }
 
     public T remove(int index) throws IndexOutOfBoundsException {
-        if (index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index >= size) throw new IndexOutOfBoundsException();
         T oldElement = this.data[index];
         System.arraycopy(this.data, index + 1, this.data, index, this.size - index - 1);
         this.data[this.size - 1] = null;
@@ -76,16 +60,12 @@ public class ArrayList<T> implements List<T> {
     }
 
     public T removeFront() throws IndexOutOfBoundsException {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return remove(0);
     }
 
     public T removeBack() throws IndexOutOfBoundsException {
-        if (this.size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (this.size == 0) throw new IndexOutOfBoundsException();
         return remove(this.size - 1);
     }
 

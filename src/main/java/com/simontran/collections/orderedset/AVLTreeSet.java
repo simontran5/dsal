@@ -1,80 +1,74 @@
-package com.simontran.collections.map;
+package com.simontran.collections.orderedset;
 
-public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> {
-    private static class Node<K, V> {
+public class AVLTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
+    private static class Node<K> {
         private K key;
-        private V value;
-        private Node<K, V> left;
-        private Node<K, V> right;
+        private Node<K> left;
+        private Node<K> right;
         private int height;
 
-        public Node(K key, V value) {
+        public Node(K key) {
             this.key = key;
-            this.value = value;
             this.left = null;
             this.right = null;
             this.height = 0;
         }
     }
 
-    private Node<K, V> root;
+    private Node<K> root;
 
-    public AVLTreeMap() {
+    public AVLTreeSet() {
         this.root = null;
     }
 
     public K min() {
-        if (this.root == null) throw new EmptyMapException();
+        if (this.root == null) return null;
         return minNode(this.root).key;
     }
 
     public K max() {
-        if (this.root == null) throw new EmptyMapException();
+        if (this.root == null) return null;
         return maxNode(this.root).key;
     }
 
     public K successor(K key) {
-        Node<K, V> successor = successorNode(this.root, key);
-        if (successor == null) throw new UnknownKeyException();
-        return successor.key;
+        Node<K> successor = successorNode(this.root, key);
+        return successor == null ? null : successor.key;
     }
 
     public K predecessor(K key) {
-        Node<K, V> predecessor = predecessorNode(this.root, key);
-        if (predecessor == null) throw new UnknownKeyException();
-        return predecessor.key;
+        Node<K> predecessor = predecessorNode(this.root, key);
+        return predecessor == null ? null : predecessor.key;
     }
 
-    public V get(K key) {
-        Node<K, V> node = getNode(this.root, key);
-        if (node == null) throw new UnknownKeyException();
-        return node.value;
+    public boolean contains(K key) {
+        return getNode(this.root, key) != null;
     }
 
-    public void insert(K key, V value) {
-        this.root = insertNode(this.root, key, value);
+    public void insert(K key) {
+        this.root = insertNode(this.root, key);
     }
 
     public void remove(K key) {
         this.root = removeNode(this.root, key);
     }
 
-    private Node<K, V> minNode(Node<K, V> node) {
+    private Node<K> minNode(Node<K> node) {
         while (node.left != null) {
             node = node.left;
         }
         return node;
     }
 
-    private Node<K, V> maxNode(Node<K, V> node) {
+    private Node<K> maxNode(Node<K> node) {
         while (node.right != null) {
             node = node.right;
         }
         return node;
     }
 
-    private Node<K, V> successorNode(Node<K, V> node, K key) {
-        Node<K, V> successor = null;
+    private Node<K> successorNode(Node<K> node, K key) {
+        Node<K> successor = null;
         while (node != null) {
             int cmp = key.compareTo(node.key);
             if (cmp < 0) {
@@ -87,8 +81,8 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return successor;
     }
 
-    private Node<K, V> predecessorNode(Node<K, V> node, K key) {
-        Node<K, V> predecessor = null;
+    private Node<K> predecessorNode(Node<K> node, K key) {
+        Node<K> predecessor = null;
         while (node != null) {
             int cmp = key.compareTo(node.key);
             if (cmp > 0) {
@@ -101,7 +95,7 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return predecessor;
     }
 
-    private Node<K, V> getNode(Node<K, V> node, K key) {
+    private Node<K> getNode(Node<K> node, K key) {
         while (node != null) {
             int cmp = key.compareTo(node.key);
             if (cmp < 0) {
@@ -115,26 +109,22 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return null;
     }
 
-    private Node<K, V> insertNode(Node<K, V> node, K key, V value) {
-        if (node == null) {
-            return new Node<>(key, value);
-        }
+    private Node<K> insertNode(Node<K> node, K key) {
+        if (node == null) return new Node<>(key);
         int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            node.left = insertNode(node.left, key, value);
+            node.left = insertNode(node.left, key);
         } else if (cmp > 0) {
-            node.right = insertNode(node.right, key, value);
+            node.right = insertNode(node.right, key);
         } else {
-            node.value = value;
+            return node;
         }
         updateHeight(node);
         return balance(node);
     }
 
-    private Node<K, V> removeNode(Node<K, V> node, K key) {
-        if (node == null) {
-            throw new UnknownKeyException();
-        }
+    private Node<K> removeNode(Node<K> node, K key) {
+        if (node == null) return null;
         int cmp = key.compareTo(node.key);
         if (cmp < 0) {
             node.left = removeNode(node.left, key);
@@ -146,24 +136,23 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
             } else if (node.right == null) {
                 return node.left;
             }
-            Node<K, V> successor = minNode(node.right);
+            Node<K> successor = minNode(node.right);
             node.key = successor.key;
-            node.value = successor.value;
             node.right = removeNode(node.right, successor.key);
         }
         updateHeight(node);
         return balance(node);
     }
 
-    private void updateHeight(Node<K, V> node) {
+    private void updateHeight(Node<K> node) {
         node.height = 1 + Math.max(height(node.left), height(node.right));
     }
 
-    private int height(Node<K, V> node) {
+    private int height(Node<K> node) {
         return node == null ? -1 : node.height;
     }
 
-    private Node<K, V> balance(Node<K, V> node) {
+    private Node<K> balance(Node<K> node) {
         int balanceFactor = balanceFactor(node);
         if (balanceFactor > 1) { // right heavy
             if (balanceFactor(node.right) < 0) { // right triangle
@@ -179,12 +168,12 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return node;
     }
 
-    private int balanceFactor(Node<K, V> node) {
+    private int balanceFactor(Node<K> node) {
         return height(node.right) - height(node.left);
     }
 
-    private Node<K, V> rotateLeft(Node<K, V> root) {
-        Node<K, V> newRoot = root.right;
+    private Node<K> rotateLeft(Node<K> root) {
+        Node<K> newRoot = root.right;
         root.right = newRoot.left;
         newRoot.left = root;
         updateHeight(root);
@@ -192,24 +181,12 @@ public class AVLTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> 
         return newRoot;
     }
 
-    private Node<K, V> rotateRight(Node<K, V> root) {
-        Node<K, V> newRoot = root.left;
+    private Node<K> rotateRight(Node<K> root) {
+        Node<K> newRoot = root.left;
         root.left = newRoot.right;
         newRoot.right = root;
         updateHeight(root);
         updateHeight(newRoot);
         return newRoot;
-    }
-
-    public static class EmptyMapException extends RuntimeException {
-        public EmptyMapException() {
-            super("Map is empty");
-        }
-    }
-
-    public static class UnknownKeyException extends RuntimeException {
-        public UnknownKeyException() {
-            super("Key was not found");
-        }
     }
 }

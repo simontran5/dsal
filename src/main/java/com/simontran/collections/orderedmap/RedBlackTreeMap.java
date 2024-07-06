@@ -1,4 +1,4 @@
-package com.simontran.collections.map;
+package com.simontran.collections.orderedmap;
 
 public class RedBlackTreeMap<K extends Comparable<K>, V> implements OrderedMap<K, V> {
     private static final boolean RED = false;
@@ -31,31 +31,28 @@ public class RedBlackTreeMap<K extends Comparable<K>, V> implements OrderedMap<K
     }
 
     public K min() {
-        if (this.root == NIL) throw new EmptyMapException();
+        if (this.root == NIL) return null;
         return minNode(this.root).key;
     }
 
     public K max() {
-        if (this.root == NIL) throw new EmptyMapException();
+        if (this.root == NIL) return null;
         return maxNode(this.root).key;
     }
 
     public K successor(K key) {
         Node<K, V> successor = successorNode(this.root, key);
-        if (successor == null) throw new UnknownKeyException();
-        return successor.key;
+        return successor == NIL ? null : successor.key;
     }
 
     public K predecessor(K key) {
         Node<K, V> predecessor = predecessorNode(this.root, key);
-        if (predecessor == null) throw new UnknownKeyException();
-        return predecessor.key;
+        return predecessor == NIL ? null : predecessor.key;
     }
 
     public V get(K key) {
         Node<K, V> node = getNode(this.root, key);
-        if (node == null) throw new UnknownKeyException();
-        return node.value;
+        return node == NIL ? null : node.value;
     }
 
     public void insert(K key, V value) {
@@ -87,7 +84,7 @@ public class RedBlackTreeMap<K extends Comparable<K>, V> implements OrderedMap<K
 
     public void remove(K key) {
         Node<K, V> delete = getNode(this.root, key);
-        if (delete == NIL) throw new UnknownKeyException();
+        if (delete == NIL) return;
         Node<K, V> child;
         boolean originalColor = delete.color;
         if (delete.left == NIL) {
@@ -312,17 +309,5 @@ public class RedBlackTreeMap<K extends Comparable<K>, V> implements OrderedMap<K
         }
         newRoot.right = root;
         root.parent = newRoot;
-    }
-
-    public static class EmptyMapException extends RuntimeException {
-        public EmptyMapException() {
-            super("Map is empty");
-        }
-    }
-
-    public static class UnknownKeyException extends RuntimeException {
-        public UnknownKeyException() {
-            super("Key was not found");
-        }
     }
 }

@@ -1,4 +1,6 @@
-package com.simontran.collections.set;
+package com.simontran.collections.orderedset;
+
+import com.simontran.collections.set.Set;
 
 public interface OrderedSet<K> extends Set<K> {
     K min();

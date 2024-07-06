@@ -20,9 +20,7 @@ public class SinglyLinkedListStack<E> implements Stack<E> {
     }
 
     public E peek() {
-        if (this.head == null) {
-            throw new EmptyStackException();
-        }
+        if (this.head == null) return null;
         return this.head.data;
     }
 
@@ -34,9 +32,7 @@ public class SinglyLinkedListStack<E> implements Stack<E> {
     }
 
     public E pop() {
-        if (this.size == 0) {
-            throw new EmptyStackException();
-        }
+        if (this.size == 0) throw new EmptyStackException();
         Node<E> removeNode = this.head;
         this.head = removeNode.next;
         E removedElement = removeNode.data;

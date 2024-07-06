@@ -13,24 +13,18 @@ public class ArrayStack<T> implements Stack<T> {
     }
 
     public T peek() {
-        if (this.size == 0) {
-            throw new EmptyStackException();
-        }
+        if (this.size == 0) return null;
         return this.data[this.size - 1];
     }
 
     public void push(T element) {
-        if (this.size == this.data.length) {
-            this.resize(this.data.length * GROWTH_FACTOR);
-        }
+        if (this.size == this.data.length) this.resize(this.data.length * GROWTH_FACTOR);
         this.data[this.size] = element;
         this.size += 1;
     }
 
     public T pop() {
-        if (this.size == 0) {
-            throw new EmptyStackException();
-        }
+        if (this.size == 0) throw new EmptyStackException();
         T oldElement = this.data[this.size - 1];
         this.data[this.size - 1] = null;
         this.size -= 1;

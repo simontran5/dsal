@@ -1,4 +1,4 @@
-package com.simontran.collections.set;
+package com.simontran.collections.orderedset;
 
 public class RedBlackTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
     private static final boolean RED = false;
@@ -29,30 +29,27 @@ public class RedBlackTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
     }
 
     public K min() {
-        if (this.root == NIL) throw new EmptySetException();
+        if (this.root == NIL) return null;
         return minNode(this.root).key;
     }
 
     public K max() {
-        if (this.root == NIL) throw new EmptySetException();
+        if (this.root == NIL) return null;
         return maxNode(this.root).key;
     }
 
     public K successor(K key) {
         Node<K> successor = successorNode(this.root, key);
-        if (successor == null) throw new UnknownKeyException();
-        return successor.key;
+        return successor == NIL ? null : successor.key;
     }
 
     public K predecessor(K key) {
         Node<K> predecessor = predecessorNode(this.root, key);
-        if (predecessor == null) throw new UnknownKeyException();
-        return predecessor.key;
+        return predecessor == NIL ? null : predecessor.key;
     }
 
     public boolean contains(K key) {
-        Node<K> node = getNode(this.root, key);
-        return node != null;
+        return getNode(this.root, key) != NIL;
     }
 
     public void insert(K key) {
@@ -67,7 +64,7 @@ public class RedBlackTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
             } else if (cmp > 0) {
                 current = current.right;
             } else {
-                throw new KeyAlreadyExistsException();
+                return;
             }
         }
         node.parent = parent;
@@ -83,7 +80,7 @@ public class RedBlackTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
 
     public void remove(K key) {
         Node<K> delete = getNode(this.root, key);
-        if (delete == NIL) throw new UnknownKeyException();
+        if (delete == NIL) return;
         Node<K> child;
         boolean originalColor = delete.color;
         if (delete.left == NIL) {
@@ -308,23 +305,5 @@ public class RedBlackTreeSet<K extends Comparable<K>> implements OrderedSet<K> {
         }
         newRoot.right = root;
         root.parent = newRoot;
-    }
-
-    public static class EmptySetException extends RuntimeException {
-        public EmptySetException() {
-            super("Set is empty");
-        }
-    }
-
-    public static class UnknownKeyException extends RuntimeException {
-        public UnknownKeyException() {
-            super("Key was not found");
-        }
-    }
-
-    public static class KeyAlreadyExistsException extends RuntimeException {
-        public KeyAlreadyExistsException() {
-            super("Key already exists");
-        }
     }
 }

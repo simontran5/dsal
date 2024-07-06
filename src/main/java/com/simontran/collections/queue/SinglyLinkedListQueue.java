@@ -21,10 +21,8 @@ public class SinglyLinkedListQueue<T> implements Queue<T> {
         this.size = 0;
     }
 
-    public T peek() throws EmptyQueueException {
-        if (this.head == null) {
-            throw new EmptyQueueException();
-        }
+    public T peek() {
+        if (this.head == null) return null;
         return this.head.data;
     }
 
@@ -39,18 +37,14 @@ public class SinglyLinkedListQueue<T> implements Queue<T> {
         this.size += 1;
     }
 
-    public T dequeue() throws EmptyQueueException {
-        if (this.size == 0) {
-            throw new EmptyQueueException();
-        }
+    public T dequeue() {
+        if (this.size == 0) throw new EmptyQueueException();
         Node<T> removeNode = this.head;
         this.head = removeNode.next;
         T removedElement = removeNode.data;
-        removeNode.next = null; // Help garbage collection
+        removeNode.next = null; // help garbage collection
         this.size -= 1;
-        if (this.size == 0) {
-            this.tail = null; // Queue is now empty
-        }
+        if (this.size == 0) this.tail = null; // queue is now empty
         return removedElement;
     }
 

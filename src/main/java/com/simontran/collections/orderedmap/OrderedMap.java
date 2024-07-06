@@ -1,4 +1,6 @@
-package com.simontran.collections.map;
+package com.simontran.collections.orderedmap;
+
+import com.simontran.collections.map.Map;
 
 public interface OrderedMap<K, V> extends Map<K, V> {
     K min();
