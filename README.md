@@ -22,7 +22,7 @@ Java data structures and algorithms library
 ### algorithms
 
 | algorithm category           | algorithms                                                             |
-| ---------------------------- | ---------------------------------------------------------------------- |
+| ---------------------------- |------------------------------------------------------------------------|
 | searching                    | binary search                                                          |
 | sorting                      | merge sort, quicksort, heapsort                                        |
 | graph traversal              | breadth-first search, depth-first search                               |
@@ -33,7 +33,7 @@ Java data structures and algorithms library
 | data compression             | huffman coding                                                         |
 | maximum flow                 | ford-fulkerson algorithm                                               |
 | stable matching              | gale-shapley algorithm                                                 |
-| string-matching              | ...                                                                    |
+| string-matching              | rabin-karp, finite automaton, knuth-moris-pratt, boyer-moore           |
 
 ## installation
 
