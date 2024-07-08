@@ -6,18 +6,18 @@ Java data structures and algorithms library
 
 ### data structures
 
-| abstract data type | data structures                                           |
-| ------------------ |-----------------------------------------------------------|
-| list               | dynamic array, linked list (singly and doubly)            |
-| stack              | dynamic array, linked list (singly)                       |
-| queue              | dynamic circular buffer, linked list (singly)             |
-| priority queue     | binary heap (max and min)                                 |
-| map                | hash table (chaining and open addressing), trie           |
-| ordered map        | AVL tree, red-black tree, b-tree                          |
-| set                | hash table (chaining and open addressing), trie           |
-| ordered set        | AVL tree, red-black tree, b-tree                          |
-| disjoint set       | forest with path compression and union by rank heuristics |
-| graph              | adjacency list, adjacency matrix                          |
+| abstract data type | data structures                                                |
+| ------------------ | -------------------------------------------------------------- |
+| list               | dynamic array, linked list (singly and doubly)                 |
+| stack              | dynamic array, linked list (singly)                            |
+| queue              | dynamic circular array, linked list (singly)                   |
+| priority queue     | binary heap (max and min)                                      |
+| map                | hash table (chaining and double hashing open addressing), trie |
+| ordered map        | AVL tree, red-black tree, b-tree                               |
+| set                | hash table (chaining and double hashing open addressing), trie |
+| ordered set        | AVL tree, red-black tree, b-tree                               |
+| disjoint set       | forest with path compression and union by rank heuristics      |
+| graph              | adjacency list, adjacency matrix                               |
 
 ### algorithms
 
