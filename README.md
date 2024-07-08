@@ -1,6 +1,6 @@
 # dsal
 
-Java data structures and algorithms library
+Java fundamental data structures and algorithms library
 
 ## features
 
