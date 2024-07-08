@@ -1,4 +1,4 @@
 package com.simontran.collections.set;
 
-public class OAHashSet {
+public class DHHashSet {
 }
